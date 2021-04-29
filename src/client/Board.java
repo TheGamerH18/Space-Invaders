@@ -30,8 +30,25 @@ public class Board extends JPanel {
 
     private Timer timer;
 
+    private TAdapter tadapter;
+
 
     public Board() {
+        tadapter = new TAdapter();
+        initBoard();
+        gameInit();
+    }
+
+    private void restart() {
+        d = null;
+        removeKeyListener(tadapter);
+        timer = null;
+        aliens = null;
+        player = null;
+        shot = null;
+        inGame = true;
+        direction = -1;
+        deaths = 0;
         initBoard();
         gameInit();
     }
@@ -40,7 +57,7 @@ public class Board extends JPanel {
     Creating Basic stuff
      */
     private void initBoard() {
-        addKeyListener(new TAdapter());
+        addKeyListener(tadapter);
         setFocusable(true);
         d = new Dimension(Commons.BOARD_WIDTH, Commons.BOARD_HEIGHT);
         setBackground(Color.black);
@@ -163,6 +180,7 @@ public class Board extends JPanel {
         g.setFont(small);
         g.drawString(message, (Commons.BOARD_WIDTH - fontMetrics.stringWidth(message)) / 2,
                 Commons.BOARD_WIDTH / 2);
+        restart();
     }
 
     private void update() {
@@ -171,6 +189,7 @@ public class Board extends JPanel {
             inGame = false;
             timer.stop();
             message = "Game won!";
+            restart();
         }
 
         // player
@@ -244,6 +263,7 @@ public class Board extends JPanel {
                 if (y > Commons.GROUND - Commons.ALIEN_HEIGHT) {
                     inGame = false;
                     message = "Invasion!";
+                    restart();
                 }
                 alien.act(direction);
             }
