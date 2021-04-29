@@ -1,6 +1,7 @@
 package client;
 
 import res.MenuButton;
+import res.MenuTitle;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,6 +21,13 @@ public class Menu extends JPanel {
         setLayout(null);
         setBackground(Color.BLACK);
 
+        // Creating Title
+        String GameName = "Space Invaders";
+        MenuTitle title = new MenuTitle(GameName);
+        FontMetrics titlesize = getFontMetrics(title.getFont());
+        title.setBounds(Commons.BOARD_WIDTH / 2 - titlesize.stringWidth(GameName) / 2,50, titlesize.stringWidth(GameName), titlesize.getHeight());
+        add(title);
+
         // Creating start button
         startgame = new MenuButton("Start Game");
         Dimension size = startgame.getPreferredSize();
@@ -29,7 +37,6 @@ public class Menu extends JPanel {
 
         // Creating exit button
         ExitGame = new MenuButton("Exit Game");
-        Dimension ExitGameSize = ExitGame.getPreferredSize();
         ExitGame.setBounds((Commons.BOARD_WIDTH / 2) - size.width / 2, Commons.BOARD_HEIGHT / 2 - size.height / 2, size.width, size.height);
         ExitGame.addActionListener(new MenuCycle());
         add(ExitGame);
