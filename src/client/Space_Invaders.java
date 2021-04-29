@@ -4,9 +4,11 @@ import javax.swing.*;
 import java.awt.EventQueue;
 
 public class Space_Invaders extends JFrame {
+    public Board board;
+    public Menu menu;
 
     Space_Invaders(){
-        initGame();
+        initMenu();
         init();
     }
 
@@ -19,10 +21,19 @@ public class Space_Invaders extends JFrame {
         setLocationRelativeTo(null);
     }
 
-    private void initGame() {
+    private void initMenu() {
+        menu = new Menu(this);
+        add(menu);
+    }
+
+    public void initGame() {
         // Initialize Window
-        Board board = new Board();
-        add(board);
+        if(board == null) {
+            board = new Board();
+            add(board);
+            board.grabFocus();
+        }
+        board.restart();
     }
 
     public static void main(String[] args) {
@@ -31,5 +42,4 @@ public class Space_Invaders extends JFrame {
             ex.setVisible(true);
         });
     }
-
 }
