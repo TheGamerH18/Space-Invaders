@@ -23,7 +23,6 @@ public class Menu extends JPanel {
     private class MenuCycle implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("Action");
             setVisibleVar(false);
             ex.initGame();
             ex.remove(ex.menu);
