@@ -6,20 +6,23 @@ import java.awt.EventQueue;
 public class Space_Invaders extends JFrame {
 
     Space_Invaders(){
-        initUI();
+        initGame();
+        init();
     }
 
-    private void initUI() {
-        // Initialize Window
-        Board board = new Board();
-        add(board);
-
+    private void init() {
         setTitle("Space-Invaders");
         setSize(Commons.BOARD_WIDTH, Commons.BOARD_HEIGHT);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
         setLocationRelativeTo(null);
+    }
+
+    private void initGame() {
+        // Initialize Window
+        Board board = new Board();
+        add(board);
     }
 
     public static void main(String[] args) {
