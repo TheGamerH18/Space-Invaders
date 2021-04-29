@@ -39,7 +39,7 @@ public class Board extends JPanel {
         gameInit();
     }
 
-    private void restart() {
+    protected void restart() {
         d = null;
         removeKeyListener(tadapter);
         timer = null;
