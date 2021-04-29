@@ -10,7 +10,9 @@ public class Space_Invaders extends JFrame {
     }
 
     private void initUI() {
-        add(new Board());
+        // Initialize Window
+        Board board = new Board();
+        add(board);
 
         setTitle("Space-Invaders");
         setSize(Commons.BOARD_WIDTH, Commons.BOARD_HEIGHT);
@@ -21,9 +23,7 @@ public class Space_Invaders extends JFrame {
     }
 
     public static void main(String[] args) {
-
         EventQueue.invokeLater(() -> {
-
             Space_Invaders ex = new Space_Invaders();
             ex.setVisible(true);
         });
