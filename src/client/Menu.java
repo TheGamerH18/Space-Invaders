@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 
 public class Menu extends JPanel {
 
-    private Space_Invaders ex;
+    private final Space_Invaders ex;
 
     Menu(Space_Invaders ex) {
         this.ex = ex;
