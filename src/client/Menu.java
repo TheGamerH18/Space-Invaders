@@ -11,6 +11,7 @@ public class Menu extends JPanel {
 
     private final MenuButton startgame;
     private final MenuButton ExitGame;
+    private final MenuButton MultiplayerGame;
 
     private final Space_Invaders ex;
 
@@ -56,6 +57,11 @@ public class Menu extends JPanel {
     private class MenuCycle implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            if(e.getSource() == MultiplayerGame) {
+                setVisibleVar(false);
+                ex.initMultiplayer();
+                ex.remove(ex.menu);
+            }
             if(e.getSource() == startgame){
                 setVisibleVar(false);
                 ex.initGame();
