@@ -4,8 +4,10 @@ import javax.swing.*;
 import java.awt.EventQueue;
 
 public class Space_Invaders extends JFrame {
+
     public Board board;
     public Menu menu;
+    public MultiplayerBoard mpboard;
 
     Space_Invaders(){
         initMenu();
@@ -31,9 +33,18 @@ public class Space_Invaders extends JFrame {
         if(board == null) {
             board = new Board();
             add(board);
-            board.grabFocus();
         }
+        board.grabFocus();
         board.restart();
+    }
+
+    public void initMultiplayer() {
+        if(mpboard == null) {
+            mpboard = new MultiplayerBoard();
+            add(mpboard);
+        }
+        mpboard.grabFocus();
+        mpboard.restart();
     }
 
     public static void main(String[] args) {
