@@ -44,7 +44,6 @@ public class Space_Invaders extends JFrame {
             add(mpboard);
         }
         mpboard.grabFocus();
-        mpboard.restart();
     }
 
     public static void main(String[] args) {
