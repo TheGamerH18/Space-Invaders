@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 
 public class Space_Invaders extends JFrame {
 
+    String username;
+
     public Board board;
     public Menu menu;
     public MultiplayerBoard mpboard;
@@ -15,6 +17,7 @@ public class Space_Invaders extends JFrame {
     }
 
     private void init() {
+        username = JOptionPane.showInputDialog("Username");
         setTitle("Space-Invaders");
         setSize(Commons.BOARD_WIDTH, Commons.BOARD_HEIGHT);
 
@@ -40,7 +43,7 @@ public class Space_Invaders extends JFrame {
 
     public void initMultiplayer() {
         if(mpboard == null) {
-            mpboard = new MultiplayerBoard();
+            mpboard = new MultiplayerBoard(username);
             add(mpboard);
         }
         mpboard.grabFocus();
