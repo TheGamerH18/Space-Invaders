@@ -46,6 +46,7 @@ public class MultiplayerNetwork extends Client {
                 Shots = (List<Shot>) pack.get(3);
             }
         });
+        start();
     }
 
     public Player[] getPlayers() {
