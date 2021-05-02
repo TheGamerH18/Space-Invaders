@@ -1,5 +1,6 @@
 package client;
 
+import com.blogspot.debukkitsblog.net.Datapackage;
 import sprite.Alien;
 import sprite.Player;
 import sprite.Shot;
@@ -14,16 +15,18 @@ import java.util.List;
 
 public class MultiplayerBoard extends JPanel {
 
+    // TODO: Username Input
+    String username = "user";
     private MultiplayerNetwork network;
 
     private Dimension d;
     private List<Alien> aliens;
-    private Player[] players;
+    private Player[] players = new Player[2];
     private List<Shot> shots;
     private int myplayerid;
 
     private boolean inGame = true;
-    private final String explImg = "src/images/explosion.png";
+    private final String explImg = "/src/images/explosion.png";
     private String message = "Game Over";
 
     private Timer timer;
@@ -54,21 +57,21 @@ public class MultiplayerBoard extends JPanel {
 
         @Override
         public void keyPressed(KeyEvent e) {
-
             players[myplayerid].keyPressed(e);
-            int key = e.getKeyCode();
-            if (key == KeyEvent.VK_SPACE && inGame) {
-                int x = players[myplayerid].getX();
-                int y = players[myplayerid].getY();
-                shots.add(new Shot(x, y));
-            }
         }
     }
 
 
     // Constructor
-    public MultiplayerBoard() {
+    public MultiplayerBoard(String username) {
+        this.username = username;
+        network = new MultiplayerNetwork("localhost", username);
         tadapter = new TAdapter();
+        myplayerid = (int) network.sendMessage(new Datapackage("AUTH", username)).get(1);
+        System.out.println(myplayerid);
+        if(myplayerid == -1) {
+            System.exit(2);
+        }
         initBoard();
         gameInit();
     }
