@@ -1,6 +1,7 @@
 package sprite;
 
 import javax.swing.*;
+import java.net.URL;
 
 public class Shot extends Sprite {
 
@@ -14,7 +15,9 @@ public class Shot extends Sprite {
 
     // Hidden Init Setting Position of Shot. Movement in Board
     private void initShot(int x, int y){
-        ImageIcon ii = new ImageIcon("src/images/shot.png");
+        String loc = "/images/bomb.png";
+        URL url = getClass().getResource(loc);
+        ImageIcon ii = new ImageIcon(url);
         setImage(ii.getImage());
 
         // Positioniere Schuss

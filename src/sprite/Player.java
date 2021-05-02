@@ -4,6 +4,7 @@ import client.Commons;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
+import java.net.URL;
 
 public class Player extends Sprite{
 
@@ -15,7 +16,9 @@ public class Player extends Sprite{
 
     // Hidden Init Setting start Position and Image
     private void initPlayer() {
-        ImageIcon ii = new ImageIcon("src/images/player.png");
+        String loc = "/images/player.png";
+        URL url = getClass().getResource(loc);
+        ImageIcon ii = new ImageIcon(url);
         width = ii.getImage().getWidth(null);
         setImage(ii.getImage());
 

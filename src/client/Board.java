@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -25,7 +26,7 @@ public class Board extends JPanel {
     private int deaths = 0;
 
     private boolean inGame = true;
-    private String explImg = "src/images/explosion.png";
+    private String explImg = "/images/explosion.png";
     private String message = "Game Over";
 
     private Timer timer;
@@ -214,7 +215,9 @@ public class Board extends JPanel {
                         && shotY >= (alienY)
                         && shotY <= (alienY + Commons.ALIEN_HEIGHT))
                 {
-                    ImageIcon ii = new ImageIcon(explImg);
+                    String loc = explImg;
+                    URL url = getClass().getResource(loc);
+                    ImageIcon ii = new ImageIcon(url);
                     alien.setImage(ii.getImage());
                     alien.setDying(true);
                     deaths++;
@@ -300,7 +303,9 @@ public class Board extends JPanel {
                     && bombY >= (playerY)
                     && bombY <= (playerY + Commons.PLAYER_HEIGHT))
             {
-                ImageIcon ii = new ImageIcon(explImg);
+                String loc = explImg;
+                URL url = getClass().getResource(loc);
+                ImageIcon ii = new ImageIcon(url);
                 player.setImage(ii.getImage());
                 player.setDying(true);
                 bomb.setDestroyed(true);
