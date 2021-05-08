@@ -18,6 +18,9 @@ public class Space_Invaders extends JFrame {
 
     private void init() {
         username = JOptionPane.showInputDialog("Username");
+        if(username == null) {
+            System.exit(2);
+        }
         setTitle("Space-Invaders");
         setSize(Commons.BOARD_WIDTH, Commons.BOARD_HEIGHT);
 
