@@ -42,6 +42,29 @@ public class MultiplayerBoard extends JPanel {
         repaint();
     }
 
+    private class Sync implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            doSync();
+        }
+    }
+
+    private void doSync() {
+        int[][] playerpositions = network.getPlayerpos();
+        int lastx = playerpositions[myplayerid][0];
+        int lasty = playerpositions[myplayerid][1];
+        if(lastx != players[myplayerid].getX() || lasty != players[myplayerid].getY()) {
+            network.sendMessage("POS", myplayerid, players[myplayerid].getX(), players[myplayerid].getY());
+        }
+        if(myplayerid == 0) {
+            players[1].setX(playerpositions[1][0]);
+            players[1].setY(playerpositions[1][1]);
+        } else {
+            players[0].setX(playerpositions[0][0]);
+            players[0].setY(playerpositions[0][1]);
+        }
+    }
+
     // KeyAdapter
     private class TAdapter extends KeyAdapter {
 
@@ -82,6 +105,9 @@ public class MultiplayerBoard extends JPanel {
         Timer timer = new Timer(Commons.DELAY, new GameCycle());
         timer.start();
 
+        Timer sync = new Timer(Commons.DELAY, new Sync());
+        sync.start();
+
         gameInit();
     }
 
@@ -121,18 +147,12 @@ public class MultiplayerBoard extends JPanel {
         g.fillRect(0, 0, d.width, d.height);
         g.setColor(Color.GREEN);
 
-        if(inGame) {
-            g.drawLine(0, Commons.GROUND, Commons.BOARD_WIDTH, Commons.GROUND);
-            drawPlayer(g);
-        }
         g.drawLine(0, Commons.GROUND, Commons.BOARD_WIDTH, Commons.GROUND);
         drawPlayer(g);
         drawShots(g);
     }
 
     private void update() {
-        int lasty = players[myplayerid].getY();
-        int lastx = players[myplayerid].getX();
         if(network.getGameinfo() == 2) {
             ex.mpboard = null;
             setVisible(false);
@@ -140,13 +160,6 @@ public class MultiplayerBoard extends JPanel {
             ex.remove(ex.mpboard);
         }
         players[myplayerid].act();
-        if(lastx != players[myplayerid].getX() || lasty != players[myplayerid].getY()) {
-            network.sendMessage("POS", myplayerid, players[myplayerid].getX(), players[myplayerid].getY());
         }
-        int[][] playerpos = network.getPlayerpos();
-        players[0].setX(playerpos[0][0]);
-        players[0].setY(playerpos[0][1]);
-        players[1].setX(playerpos[1][0]);
-        players[1].setY(playerpos[1][1]);
     }
 }
