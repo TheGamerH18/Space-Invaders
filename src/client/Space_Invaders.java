@@ -29,9 +29,10 @@ public class Space_Invaders extends JFrame {
         setLocationRelativeTo(null);
     }
 
-    private void initMenu() {
+    public void initMenu() {
         menu = new Menu(this);
         add(menu);
+        menu.grabFocus();
     }
 
     public void initGame() {
@@ -46,7 +47,7 @@ public class Space_Invaders extends JFrame {
 
     public void initMultiplayer() {
         if(mpboard == null) {
-            mpboard = new MultiplayerBoard(username);
+            mpboard = new MultiplayerBoard(username, this);
             add(mpboard);
         }
         mpboard.grabFocus();
