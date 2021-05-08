@@ -18,6 +18,7 @@ public class MultiplayerBoard extends JPanel {
     // TODO: Username Input
     String username = "user";
     private MultiplayerNetwork network;
+    private Space_Invaders ex;
 
     private Dimension d;
     private List<Alien> aliens;
@@ -64,7 +65,9 @@ public class MultiplayerBoard extends JPanel {
 
     // Constructor
     public MultiplayerBoard(String username) {
+    public MultiplayerBoard(String username, Space_Invaders ex) {
         this.username = username;
+        this.ex = ex;
         network = new MultiplayerNetwork("localhost", username);
         tadapter = new TAdapter();
         myplayerid = (int) network.sendMessage(new Datapackage("AUTH", username)).get(1);
@@ -134,6 +137,11 @@ public class MultiplayerBoard extends JPanel {
     private void update() {
         int lasty = players[myplayerid].getY();
         int lastx = players[myplayerid].getX();
+        if(network.getGameinfo() == 2) {
+            setVisible(false);
+            ex.initMenu();
+            ex.remove(ex.mpboard);
+        }
         players[myplayerid].act();
         if(lastx != players[myplayerid].getX() || lasty != players[myplayerid].getY()) {
             network.sendMessage("POS", myplayerid, players[myplayerid].getX(), players[myplayerid].getY());
