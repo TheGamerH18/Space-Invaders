@@ -19,7 +19,11 @@ public class MultiplayerNetwork extends Client {
         registerMethod("GAME_INFO", new Executable() {
             @Override
             public void run(Datapackage pack, Socket socket) {
+                System.out.println("New Game Info");
                 gameinfo = (int) pack.get(1);
+                if(gameinfo == 2) {
+                    stop();
+                }
             }
         });
 
