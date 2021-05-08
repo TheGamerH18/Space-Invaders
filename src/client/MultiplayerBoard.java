@@ -138,6 +138,7 @@ public class MultiplayerBoard extends JPanel {
         int lasty = players[myplayerid].getY();
         int lastx = players[myplayerid].getX();
         if(network.getGameinfo() == 2) {
+            ex.mpboard = null;
             setVisible(false);
             ex.initMenu();
             ex.remove(ex.mpboard);
