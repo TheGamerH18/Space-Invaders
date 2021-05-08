@@ -17,20 +17,15 @@ public class MultiplayerBoard extends JPanel {
 
     // TODO: Username Input
     String username = "user";
-    private MultiplayerNetwork network;
-    private Space_Invaders ex;
+    private final MultiplayerNetwork network;
+    private final Space_Invaders ex;
 
     private Dimension d;
-    private List<Alien> aliens;
-    private Player[] players = new Player[2];
-    private List<Shot> shots;
-    private int myplayerid;
+    private final Player[] players = new Player[2];
+    private final ArrayList<Shot> shots = new ArrayList<>();
+    private final int myplayerid;
 
-    private boolean inGame = true;
     private final String explImg = "/src/images/explosion.png";
-    private String message = "Game Over";
-
-    private Timer timer;
 
     private final TAdapter tadapter;
 
@@ -64,7 +59,6 @@ public class MultiplayerBoard extends JPanel {
 
 
     // Constructor
-    public MultiplayerBoard(String username) {
     public MultiplayerBoard(String username, Space_Invaders ex) {
         this.username = username;
         this.ex = ex;
@@ -86,7 +80,7 @@ public class MultiplayerBoard extends JPanel {
         d = new Dimension(Commons.BOARD_WIDTH, Commons.BOARD_HEIGHT);
         setBackground(Color.BLACK);
 
-        timer = new Timer(Commons.DELAY, new GameCycle());
+        Timer timer = new Timer(Commons.DELAY, new GameCycle());
         timer.start();
 
         gameInit();
@@ -132,6 +126,9 @@ public class MultiplayerBoard extends JPanel {
             g.drawLine(0, Commons.GROUND, Commons.BOARD_WIDTH, Commons.GROUND);
             drawPlayer(g);
         }
+        g.drawLine(0, Commons.GROUND, Commons.BOARD_WIDTH, Commons.GROUND);
+        drawPlayer(g);
+        drawShots(g);
     }
 
     private void update() {
