@@ -5,12 +5,14 @@ import com.blogspot.debukkitsblog.net.Datapackage;
 import com.blogspot.debukkitsblog.net.Executable;
 
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class MultiplayerNetwork extends Client {
     int playeramount = 2;
 
     private int[][] playerpos = new int[playeramount][2];
     private int gameinfo;
+    private ArrayList<int[]> shots = new ArrayList<>();
 
     public MultiplayerNetwork(String host, String username) {
         super(host, 25598, 1000, false, username, "player");
@@ -36,6 +38,13 @@ public class MultiplayerNetwork extends Client {
                 playerpos[1][1] = (int) pack.get(4);
             }
         });
+
+        registerMethod("SHOTS", new Executable() {
+            @Override
+            public void run(Datapackage pack, Socket socket) {
+                shots = (ArrayList<int[]>) pack.get(1);
+            }
+        });
         start();
     }
 
@@ -45,5 +54,8 @@ public class MultiplayerNetwork extends Client {
 
     public int getGameinfo() {
         return gameinfo;
+    }
+    public ArrayList<int[]> getShots() {
+        return shots;
     }
 }
