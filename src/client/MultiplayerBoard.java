@@ -171,6 +171,16 @@ public class MultiplayerBoard extends JPanel {
         }
     }
 
+    private void drawbombs(Graphics g) {
+        for(Alien alien : aliens) {
+            Alien.Bomb b = alien.getBomb();
+            if(!b.isDestroyed()) {
+                System.out.println("Drawing");
+                g.drawImage(b.getImage(), b.getX(), b.getY(), this);
+            }
+        }
+    }
+
     private void doDrawing(Graphics g) {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, d.width, d.height);
@@ -180,6 +190,7 @@ public class MultiplayerBoard extends JPanel {
         drawPlayer(g);
         drawShots(g);
         drawAliens(g);
+        drawbombs(g);
     }
 
     private void update() {
