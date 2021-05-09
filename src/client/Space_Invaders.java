@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.EventQueue;
 
 public class Space_Invaders extends JFrame {
+    final String version = "1.0.0";
 
     String username;
 
@@ -12,6 +13,7 @@ public class Space_Invaders extends JFrame {
     public MultiplayerBoard mpboard;
 
     Space_Invaders(){
+        System.out.println(version);
         initMenu();
         init();
     }
