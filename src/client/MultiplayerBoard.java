@@ -79,12 +79,14 @@ public class MultiplayerBoard extends JPanel {
 
         @Override
         public void keyPressed(KeyEvent e) {
-            players[myplayerid].keyPressed(e);
-            int key = e.getKeyCode();
-            if (key == KeyEvent.VK_SPACE) {
-                int x = players[myplayerid].getX();
-                int y = players[myplayerid].getY();
-                network.sendMessage(new Datapackage("NEW_SHOT", x, y, myplayerid));
+            if(players[myplayerid].isVisible()) {
+                players[myplayerid].keyPressed(e);
+                int key = e.getKeyCode();
+                if (key == KeyEvent.VK_SPACE) {
+                    int x = players[myplayerid].getX();
+                    int y = players[myplayerid].getY();
+                    network.sendMessage(new Datapackage("NEW_SHOT", x, y, myplayerid));
+                }
             }
         }
     }
