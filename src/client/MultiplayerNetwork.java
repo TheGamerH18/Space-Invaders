@@ -52,6 +52,7 @@ public class MultiplayerNetwork extends Client {
             @Override
             public void run(Datapackage pack, Socket socket) {
                 aliens = (ArrayList<int[]>) pack.get(1);
+                shots = (ArrayList<int[]>) pack.get(2);
             }
         });
 
