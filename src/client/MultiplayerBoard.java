@@ -65,6 +65,8 @@ public class MultiplayerBoard extends JPanel {
             players[0].setX(playerpositions[0][0]);
             players[0].setY(playerpositions[0][1]);
         }
+        players[0].setDying(playerpositions[0][2] == 0);
+        players[1].setDying(playerpositions[1][2] == 0);
     }
 
     // KeyAdapter
