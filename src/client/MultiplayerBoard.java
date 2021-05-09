@@ -1,6 +1,7 @@
 package client;
 
 import com.blogspot.debukkitsblog.net.Datapackage;
+import sprite.Alien;
 import sprite.Player;
 import sprite.Shot;
 
@@ -22,6 +23,7 @@ public class MultiplayerBoard extends JPanel {
     private Dimension d;
     private final Player[] players = new Player[2];
     private final ArrayList<Shot> shots = new ArrayList<>();
+    private ArrayList<Alien> aliens = new ArrayList<>();
     private final int myplayerid;
 
     private final String explImg = "/src/images/explosion.png";
@@ -148,6 +150,17 @@ public class MultiplayerBoard extends JPanel {
         }
     }
 
+    private void drawAliens(Graphics g) {
+        for(Alien alien : aliens) {
+            if(alien.isVisible()) {
+                g.drawImage(alien.getImage(), alien.getX(), alien.getY(), this);
+            }
+            if(alien.isDying()) {
+                alien.die();
+            }
+        }
+    }
+
     private void drawShots(Graphics g) {
         for(Shot shot : shots) {
             if(shot.isVisible()) {
@@ -164,6 +177,7 @@ public class MultiplayerBoard extends JPanel {
         g.drawLine(0, Commons.GROUND, Commons.BOARD_WIDTH, Commons.GROUND);
         drawPlayer(g);
         drawShots(g);
+        drawAliens(g);
     }
 
     private void update() {
@@ -178,6 +192,11 @@ public class MultiplayerBoard extends JPanel {
         ArrayList<int[]> shotspos = network.getShots();
         for(int[] shotpos : shotspos) {
             shots.add(new Shot(shotpos[0], shotpos[1]));
+        }
+        aliens.clear();
+        ArrayList<int[]> alienspos = network.getAliens();
+        for(int[] alienpos : alienspos) {
+            aliens.add(new Alien(alienpos[0], alienpos[1]));
         }
     }
 }

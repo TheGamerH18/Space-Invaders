@@ -13,6 +13,7 @@ public class MultiplayerNetwork extends Client {
     private int[][] playerpos = new int[playeramount][2];
     private int gameinfo;
     private ArrayList<int[]> shots = new ArrayList<>();
+    private ArrayList<int[]> aliens = new ArrayList<>();
 
     public MultiplayerNetwork(String host, String username) {
         super(host, 25598, 1000, false, username, "player");
@@ -39,6 +40,13 @@ public class MultiplayerNetwork extends Client {
             }
         });
 
+        registerMethod("ALIENS", new Executable() {
+            @Override
+            public void run(Datapackage pack, Socket socket) {
+                aliens = (ArrayList<int[]>) pack.get(1);
+            }
+        });
+
         registerMethod("SHOTS", new Executable() {
             @Override
             public void run(Datapackage pack, Socket socket) {
@@ -57,5 +65,9 @@ public class MultiplayerNetwork extends Client {
     }
     public ArrayList<int[]> getShots() {
         return shots;
+    }
+
+    public ArrayList<int[]> getAliens() {
+        return aliens;
     }
 }
