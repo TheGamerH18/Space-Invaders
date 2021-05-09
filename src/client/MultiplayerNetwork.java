@@ -23,36 +23,11 @@ public class MultiplayerNetwork extends Client {
             if(gameinfo != 1 && gameinfo != 0) stop();
         });
 
-        registerMethod("POS", new Executable() {
-            @Override
-            public void run(Datapackage pack, Socket socket) {
-                playerpos[0][0] = (int) pack.get(1);
-                playerpos[0][1] = (int) pack.get(2);
-                playerpos[1][0] = (int) pack.get(3);
-                playerpos[1][1] = (int) pack.get(4);
-            }
-        });
-
-        registerMethod("BOMBS", new Executable() {
-            @Override
-            public void run(Datapackage pack, Socket socket) {
-                bombs = (ArrayList<int[]>) pack.get(1);
-            }
-        });
-
-        registerMethod("ALIENS", new Executable() {
-            @Override
-            public void run(Datapackage pack, Socket socket) {
-                aliens = (ArrayList<int[]>) pack.get(1);
-                shots = (ArrayList<int[]>) pack.get(2);
-            }
-        });
-
-        registerMethod("SHOTS", new Executable() {
-            @Override
-            public void run(Datapackage pack, Socket socket) {
-                shots = (ArrayList<int[]>) pack.get(1);
-            }
+        registerMethod("SYNC", (pack, socket) -> {
+            aliens = (ArrayList<int[]>) pack.get(1);
+            shots = (ArrayList<int[]>) pack.get(2);
+            playerpos = (int[][]) pack.get(3);
+            bombs = (ArrayList<int[]>) pack.get(4);
         });
         start();
     }
