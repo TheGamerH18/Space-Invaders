@@ -201,6 +201,7 @@ public class MultiplayerBoard extends JPanel {
             ex.initMenu();
             ex.remove(ex.mpboard);
         }
+        // PLayer movement
         players[myplayerid].act();
         shots.clear();
         ArrayList<int[]> shotspos = network.getShots();
@@ -222,5 +223,6 @@ public class MultiplayerBoard extends JPanel {
                 }
             }
         }
+
     }
 }
