@@ -12,7 +12,6 @@ public class Bomb extends Sprite{
     }
 
     private void initBomb(int x, int y) {
-        setDestroyed(true);
 
         this.x = x;
         this.y = y;

@@ -2,6 +2,7 @@ package client;
 
 import com.blogspot.debukkitsblog.net.Datapackage;
 import sprite.Alien;
+import sprite.Bomb;
 import sprite.Player;
 import sprite.Shot;
 
@@ -16,7 +17,6 @@ import java.util.ArrayList;
 
 public class MultiplayerBoard extends JPanel {
 
-    // TODO: Username Input
     String username = "user";
     private final MultiplayerNetwork network;
     private final Space_Invaders ex;
@@ -25,6 +25,7 @@ public class MultiplayerBoard extends JPanel {
     private final Player[] players = new Player[2];
     private final ArrayList<Shot> shots = new ArrayList<>();
     private ArrayList<Alien> aliens = new ArrayList<>();
+    private ArrayList<Bomb> bombs = new ArrayList<>();
     private final int myplayerid;
 
     private final String explImg = "/src/images/explosion.png";
@@ -172,12 +173,8 @@ public class MultiplayerBoard extends JPanel {
     }
 
     private void drawbombs(Graphics g) {
-        for(Alien alien : aliens) {
-            Alien.Bomb b = alien.getBomb();
-            if(!b.isDestroyed()) {
-                System.out.println("Drawing");
-                g.drawImage(b.getImage(), b.getX(), b.getY(), this);
-            }
+        for(Bomb bomb : bombs) {
+            g.drawImage(bomb.getImage(), bomb.getX(), bomb.getY(), this);
         }
     }
 
@@ -196,18 +193,20 @@ public class MultiplayerBoard extends JPanel {
     private void update() {
         String explImg = "/images/explosion.png";
         if(network.getGameinfo() == 2) {
-            ex.mpboard = null;
             setVisible(false);
             ex.initMenu();
             ex.remove(ex.mpboard);
+            ex.mpboard = null;
         }
         // PLayer movement
         players[myplayerid].act();
         shots.clear();
+
         ArrayList<int[]> shotspos = network.getShots();
         for(int[] shotpos : shotspos) {
             shots.add(new Shot(shotpos[0], shotpos[1]));
         }
+
         ArrayList<int[]> alienspos = network.getAliens();
         for(int i = 0; i < alienspos.size(); i++) {
             if(aliens.size() != 24) {
@@ -224,5 +223,12 @@ public class MultiplayerBoard extends JPanel {
             }
         }
 
+        bombs.clear();
+        ArrayList<int[]> bombspos = network.getBombs();
+        for(int[] bombpos : bombspos) {
+            if(bombpos[2] == 1) {
+                bombs.add(new Bomb(bombpos[0], bombpos[1]));
+            }
+        }
     }
 }
