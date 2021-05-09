@@ -2,6 +2,7 @@ package client;
 
 import com.blogspot.debukkitsblog.net.Datapackage;
 import sprite.Alien;
+import sprite.Bomb;
 import sprite.Player;
 import sprite.Shot;
 
@@ -16,18 +17,16 @@ import java.util.ArrayList;
 
 public class MultiplayerBoard extends JPanel {
 
-    // TODO: Username Input
-    String username = "user";
+    String username;
     private final MultiplayerNetwork network;
     private final Space_Invaders ex;
 
     private Dimension d;
     private final Player[] players = new Player[2];
     private final ArrayList<Shot> shots = new ArrayList<>();
-    private ArrayList<Alien> aliens = new ArrayList<>();
+    private final ArrayList<Alien> aliens = new ArrayList<>();
+    private final ArrayList<Bomb> bombs = new ArrayList<>();
     private final int myplayerid;
-
-    private final String explImg = "/src/images/explosion.png";
 
     private final TAdapter tadapter;
 
@@ -66,6 +65,8 @@ public class MultiplayerBoard extends JPanel {
             players[0].setX(playerpositions[0][0]);
             players[0].setY(playerpositions[0][1]);
         }
+        players[0].setDying(playerpositions[0][2] == 0);
+        players[1].setDying(playerpositions[1][2] == 0);
     }
 
     // KeyAdapter
@@ -125,6 +126,7 @@ public class MultiplayerBoard extends JPanel {
         while(network.getGameinfo() == 0) {
             System.out.println("Not enough players");
             try {
+                //noinspection BusyWait
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -133,6 +135,13 @@ public class MultiplayerBoard extends JPanel {
         players[0] = new Player();
         players[1] = new Player();
         network.sendMessage(new Datapackage("POS", myplayerid, players[myplayerid].getX(), players[myplayerid].getY()));
+    }
+
+    private void backtomenu() {
+        setVisible(false);
+        ex.initMenu();
+        ex.remove(ex.mpboard);
+        ex.mpboard = null;
     }
 
     @Override
@@ -171,6 +180,12 @@ public class MultiplayerBoard extends JPanel {
         }
     }
 
+    private void drawbombs(Graphics g) {
+        for(Bomb bomb : bombs) {
+            g.drawImage(bomb.getImage(), bomb.getX(), bomb.getY(), this);
+        }
+    }
+
     private void doDrawing(Graphics g) {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, d.width, d.height);
@@ -180,22 +195,21 @@ public class MultiplayerBoard extends JPanel {
         drawPlayer(g);
         drawShots(g);
         drawAliens(g);
+        drawbombs(g);
     }
 
     private void update() {
         String explImg = "/images/explosion.png";
-        if(network.getGameinfo() == 2) {
-            ex.mpboard = null;
-            setVisible(false);
-            ex.initMenu();
-            ex.remove(ex.mpboard);
-        }
+        if(network.getGameinfo() != 0 && network.getGameinfo() != 1) backtomenu();
+        // PLayer movement
         players[myplayerid].act();
         shots.clear();
+
         ArrayList<int[]> shotspos = network.getShots();
         for(int[] shotpos : shotspos) {
             shots.add(new Shot(shotpos[0], shotpos[1]));
         }
+
         ArrayList<int[]> alienspos = network.getAliens();
         for(int i = 0; i < alienspos.size(); i++) {
             if(aliens.size() != 24) {
@@ -206,9 +220,20 @@ public class MultiplayerBoard extends JPanel {
                 if(aliens.get(i).isVisible() && alienspos.get(i)[2] == 1) {
                     aliens.get(i).setDying(true);
                     URL url = getClass().getResource(explImg);
-                    ImageIcon ii = new ImageIcon(url);
-                    aliens.get(i).setImage(ii.getImage());
+                    ImageIcon ii;
+                    if (url != null) {
+                        ii = new ImageIcon(url);
+                        aliens.get(i).setImage(ii.getImage());
+                    }
                 }
+            }
+        }
+
+        bombs.clear();
+        ArrayList<int[]> bombspos = network.getBombs();
+        for(int[] bombpos : bombspos) {
+            if(bombpos[2] == 1) {
+                bombs.add(new Bomb(bombpos[0], bombpos[1]));
             }
         }
     }
