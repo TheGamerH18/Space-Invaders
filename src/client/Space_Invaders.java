@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.EventQueue;
 
 public class Space_Invaders extends JFrame {
-    final String version = "1.0.0";
+    final String version = "0.5";
 
     String username;
 
