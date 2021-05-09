@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class MultiplayerBoard extends JPanel {
@@ -144,7 +145,8 @@ public class MultiplayerBoard extends JPanel {
         for(Player player : players) {
             if(player.isVisible()) {
                 g.drawImage(player.getImage(), player.getX(), player.getY(), this);
-            } if(player.isDying()) {
+            }
+            if(player.isDying()) {
                 player.die();
             }
         }
@@ -181,6 +183,7 @@ public class MultiplayerBoard extends JPanel {
     }
 
     private void update() {
+        String explImg = "/images/explosion.png";
         if(network.getGameinfo() == 2) {
             ex.mpboard = null;
             setVisible(false);
@@ -193,10 +196,20 @@ public class MultiplayerBoard extends JPanel {
         for(int[] shotpos : shotspos) {
             shots.add(new Shot(shotpos[0], shotpos[1]));
         }
-        aliens.clear();
         ArrayList<int[]> alienspos = network.getAliens();
-        for(int[] alienpos : alienspos) {
-            aliens.add(new Alien(alienpos[0], alienpos[1]));
+        for(int i = 0; i < alienspos.size(); i++) {
+            if(aliens.size() != 24) {
+                aliens.add(new Alien(alienspos.get(i)[0], alienspos.get(i)[1]));
+            } else {
+                aliens.get(i).setX(alienspos.get(i)[0]);
+                aliens.get(i).setY(alienspos.get(i)[1]);
+                if(aliens.get(i).isVisible() && alienspos.get(i)[2] == 1) {
+                    aliens.get(i).setDying(true);
+                    URL url = getClass().getResource(explImg);
+                    ImageIcon ii = new ImageIcon(url);
+                    aliens.get(i).setImage(ii.getImage());
+                }
+            }
         }
     }
 }
